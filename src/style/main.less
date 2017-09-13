@@ -1,0 +1,64 @@
+@import (css) '../assets/iconfont/iconfont.css';
+@hundred:100%;
+*{
+    box-sizing: border-box;
+}
+html,body{
+    width: 100%;
+    overflow-x: hidden;
+    margin:0;
+    padding:0;
+    background: #eeeeee
+}
+a{
+    text-decoration: none;
+    cursor: pointer
+}
+.slide-fade-enter-active {
+    transition: all .8s ease;
+}
+.slide-fade-leave-active {
+    transition: all .2s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter, .slide-fade-leave-to
+  /* .slide-fade-leave-active for below version 2.1.8 */ {
+    // transform: translateX(10px);
+    opacity: 0;
+}
+.boom-in-enter-active{
+    transition: transform .2s ease-in;
+}
+.boom-in-leave-active{
+    transition: transform 0.2s ease-out;
+}
+.boom-in-enter, .boom-in-leave-to{
+    transform: scale(0)
+}
+.markdown-text{
+    a{
+        color:#268785;
+    }
+    p{
+        line-height: 25px;
+        margin: 0;
+        text-indent: 2em;
+        padding: 0;
+        img{
+            margin-left: -2em;
+            width: 90%;
+        }
+    }
+    ol,ul{
+        padding: 0
+    }
+    li{
+        text-indent: 2em;
+        list-style:none;
+    }
+    blockquote{
+        margin: 1em 1em;
+        padding: 1em 1em;
+        border-left: 10px solid #D6DBDF;
+        background: rgba(102,128,153,.05)
+    }
+}
