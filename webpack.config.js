@@ -28,8 +28,8 @@ module.exports = {
         contentBase: './build',
         hot: true,
         open:true,
-        // host:'192.168.1.115',  /*用于手机端调试*/
-        // port:3000
+        host:'192.168.1.115',  /*用于手机端调试*/
+        port:3000
     },
     module:{
         rules:[
