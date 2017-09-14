@@ -20,9 +20,6 @@
             <img :src="item.author.avatar_url">
         </li>
     </ul>
-    <transition name="boom-in">
-        <div class="backTop" @click="backTop" v-show="scrollY>0"><i class="iconfont icon-jiantoushang"></i></div>
-    </transition>
     </section>
     </div>
 </template>
@@ -32,7 +29,6 @@ import timeFormat from '../utils/timeFormat';
 export default {
     data:function() {
       return {
-          scrollY:0,
           tabActive:'all',
           page:1,
           all:true,
@@ -70,7 +66,7 @@ export default {
             this.$router.push({name:'article',params:{id:item.id}});
         },
         loadMoreItems:function(e) {
-            this.scrollY = window.scrollY;
+            // this.$store.state.scrollY = window.scrollY;
             if(!this.$store.state.isLoading && window.document.documentElement.offsetHeight <= window.screen.height + window.scrollY) {
                 this.getTab(this.tabActive,this.page++,false)
             }
@@ -89,27 +85,16 @@ export default {
             }).catch(err=>{
                 console.log(err);
             })
-        },
-        backTop:function(){
-            let rate = window.scrollY/50;
-            let rocket = window.setInterval(()=>{
-                if(window.scrollY <= 0){
-                    window.clearInterval(rocket);
-                }else {
-                    window.scrollTo(0,window.scrollY-rate);
-                }
-            },5)
         }
     },
     filters:{
         timeFormat: timeFormat
     },
-    // created() {
-        
-    // },
+    created() {
+        this.itemsInit();
+    },
     beforeRouteEnter(to,from,next) {
         next(vm=>{
-            vm.itemsInit();
             vm.addEvent();
         });
     },
@@ -171,7 +156,7 @@ export default {
                     white-space: nowrap;
                     max-width:@hundred;
                     vertical-align: middle;
-                    overflow: hidden;//overflow加text-overflow才能使text-overflow生效
+                    overflow: hidden;//overflow加text-overflow和white-space才能使text-overflow生效
                     text-overflow: ellipsis;
                 }
                 span{
@@ -196,37 +181,10 @@ export default {
             }
         }
     }
-    .backTop{
-        padding-top: .6em;
-        position: fixed;
-        margin-right: 15vw;
-        right: 0;
-        bottom: 10px;
-        height: 4em;
-        width: 4em;
-        border-radius: 50%;
-        background: #263238;
-        transition: opacity .5s ease,transform 0.2s ease-out;/*会覆盖vue过渡动画的transition属性，怎么解决？
-                                                              *原来可以写多个的...
-                                                              */                     
-        text-align: center;
-        box-shadow:0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);
-        i{
-            color: white;
-            font-size: 2em
-        }
-        &:hover{
-            transition: all .5s ease;
-            opacity: .8;
-        }
-    }
     @media screen and (max-width:700px){
         .home{
             width: @hundred;
             margin: 0;
-        }
-        .backTop{
-            margin-right: 10px;
         }
     }
 </style>

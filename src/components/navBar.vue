@@ -2,12 +2,9 @@
   <header>
       <a><img src="../assets/cnodejs_light.svg"></a>
       <nav>
-          <ul>
-              <li><button>关于</button></li>
-              <li v-show="isLogin"><button>消息{{userMsgsCount}}</button></li>
-              <li v-show="!isLogin"><button @click="login">登录</button></li>
-              <li v-show="isLogin"><button @click="getUserInfo">我</button></li>
-          </ul>
+            <i class="iconfont icon-information"></i></li>
+            <button v-show="!isLogin" @click="login">登录</button>
+            <img class="new" v-show="isLogin" @click="getUserInfo" :src="avatar">
       </nav>
   </header>
 </template>
@@ -18,15 +15,18 @@ export default {
         ...mapGetters([
             'isLogin',
             'userMsgsCount',
-            'loginname'
+            'loginname',
+            'avatar'
         ])
     },
     methods: {
         login: function() {
-            this.$router.push({name:'login'})
+            this.$router.push({name:'login'});
+            this.$store.state.currentPage = "登录";
         },
         getUserInfo: function() {
-            this.$router.push({name:'user',params:{user:this.loginname}})
+            this.$router.push({name:'user',params:{user:this.loginname}});
+            this.$store.state.currentPage = "我的主页"
         }
     }
 }
@@ -44,10 +44,20 @@ export default {
         padding: 10px 10px;
         box-shadow: 1px 1px 5px 1px #888888;
         img{
-            width: 8em; 
+            width: 8em;
         }
-        ul{
-            list-style: none;
+        nav{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            i{
+                font-size:1.5em;
+                cursor: pointer;
+                margin-right: 1em;
+                &:hover{
+                    color: #42b983;
+                }
+            }
             button{
                 background: transparent;
                 border: none;
@@ -55,11 +65,13 @@ export default {
                 padding: 0;
                 cursor: pointer;
                 outline: none;
+                vertical-align: baseline;
             }
-            margin: 0;
-            display: flex;
-            li{
-                margin: 0 10px;
+            img{
+                position: relative;
+                cursor: pointer;
+                width: 2em;
+                border-radius: 50%;
             }
         }
     }

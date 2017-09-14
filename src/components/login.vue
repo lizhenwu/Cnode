@@ -58,6 +58,7 @@ export default {
     width: 100%;
     overflow: hidden;
     section{
+        padding-top: 3em;
         display: flex;
         flex-direction: column;
         align-items: center;
