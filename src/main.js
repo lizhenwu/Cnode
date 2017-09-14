@@ -6,7 +6,7 @@ import {Vuex,store} from './store/store';
 Vue.use(VueRouter);
 const xhr = axios.create({
     baseURL: 'https://cnodejs.org/api/v1/',
-    timeout: 1000
+    timeout: 5000
 });
 Vue.prototype.$xhr = xhr;
 import App from './App'
