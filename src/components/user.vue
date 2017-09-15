@@ -11,8 +11,8 @@
         <ul class="tabs">  
           <li v-show="loginname === this.$route.params.user"><a class="tab" @click="toggleTab('msg',$event)">消息</a></li>
           <li><a class="tab" id="init" @click="toggleTab('reply',$event)">最近</a></li>
+          <li><a v-text="isLogin ? '我的收藏':'ta的收藏'" class="tab" @click="toggleTab('collect',$event)"></a></li>
         </ul>
-        <h3>{{title.active}}</h3>
         <div ref="msg" class="msg" v-show="loginname === this.$route.params.user">
             <ul>
                 <li v-for="item of not_read"></li>
@@ -30,6 +30,11 @@
                     <a @click="getItem(item)">{{item.title}}</a>
                     <span class="time">{{item.last_reply_at | timeFormat}}</span>
                 </li>
+            </ul>
+        </div>
+        <div ref="collect" class="msg">
+            <ul>
+                <li v-for="item of collects"></li>
             </ul>
         </div>
       </div>
@@ -51,11 +56,7 @@ export default {
             not_read: [],
             recent_replies: [],
             recent_topics: [],
-            title:{
-                'msg':'全部消息',
-                'reply':'最近动态',
-                'active':''
-            }
+            collects :[]
         }
     },
     computed: {
@@ -66,7 +67,7 @@ export default {
         ])
     },
     methods:{
-        toggleTab: function(name,event) {
+        toggleTab(name,event) {
             let tabs = document.getElementsByClassName('tab');
             for(let i of tabs) {
                 i.classList.remove('active');
@@ -75,14 +76,17 @@ export default {
             for(let i in this.$refs) {
                 this.$refs[i].style.opacity = 0;
             }
-            this.title['active'] = this.title[name];
             this.$refs[name].style.opacity = 1;
-            name === 'msg' ? this.getUserMsgs() : this.getUserActs(this.$route.params.user);
+            switch(name) {
+                case 'msg' : this.getUserMsgs();break;
+                case 'reply': this.getUserActs(this.$route.params.user);break;
+                case 'collect': this.getCollects(this.$route.params.user);break;       
+            }
         },
-        getItem:function(item,event) {
+        getItem(item,event) {
             this.$router.push({name:'article',params:{id:item.id}})
         },
-        getUserMsgs: function() {
+        getUserMsgs() {
             if(this.isLogin) {
                 this.$xhr.get('messages',{params: {
                     accesstoken : this.accessToken,
@@ -94,16 +98,21 @@ export default {
                 })
             }
         },
-        getUserActs: function(username) {
-                this.$xhr.get(`user/${username}`).then(response=>{
-                    this.recent_replies = response.data.data.recent_replies;
-                    this.recent_topics = response.data.data.recent_topics;
-                    this.avatar = response.data.data.avatar_url;
-                    this.creatTime = response.data.data.create_at;
-                    this.githubName = response.data.data.githubUsername;
-                }).catch(err=>{
-                    console.log(err);
-                })
+        getUserActs(username) {
+            this.$xhr.get(`user/${username}`).then(response=>{
+                this.recent_replies = response.data.data.recent_replies;
+                this.recent_topics = response.data.data.recent_topics;
+                this.avatar = response.data.data.avatar_url;
+                this.creatTime = response.data.data.create_at;
+                this.githubName = response.data.data.githubUsername;
+            }).catch(err=>{
+                console.log(err);
+            })
+        },
+        getCollects(username) {
+            this.$xhr.get(`topic_collect/${username}`).then(response=>{
+                this.collects = response.data.data;
+            })
         }
     },
     filters:{

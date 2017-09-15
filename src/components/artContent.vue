@@ -3,7 +3,7 @@
     <tool-bar></tool-bar>
     <article>
         <header>
-            <h4>{{article.title}}<i :class="{collect: !article.is_collect}" @click="collect" class="iconfont icon-discount"></i></h4>
+            <h4><i ref="collect" :class="{collect: article.is_collect}" @click="collect(article.id,article.is_collect)" class="iconfont icon-discount"></i>{{article.title}}</h4>
             <p>
             发布于{{article.create_at | timeFormat}} by <span class="author" @click="getAuthor(author.loginname)">{{author.loginname}}</span>
             <span style="color:#373c38">{{article.reply_count}}次回复</span>/<span>{{article.visit_count}}次浏览</span>
@@ -11,13 +11,14 @@
         </header>
         <section  v-html="article.content" class="article">
         </section>
-        <section class="comments">
-        </section>
+        <h4 class="title">所有回复</h4>
+        <comments :replies='article.replies'></comments>
     </article>
     </div>
 </template>
 <script>
 import toolBar from './toolBar';
+import comments from './comments';
 import { mapGetters } from 'vuex';
 import timeFormat from '../utils/timeFormat';
 export default {
@@ -27,8 +28,15 @@ export default {
             author:{}
         }
     },
+    computed: {
+        ...mapGetters([
+            'isLogin',
+            'accessToken'
+        ])
+    },
     components: {
-        toolBar
+        toolBar,
+        comments
     },
     filters:{
         timeFormat
@@ -37,16 +45,39 @@ export default {
         getAuthor(username) {
             this.$router.push({name:'user',params:{user:username}});
         },
-        collect() {
-
+        collect(id,isCollect) {
+            if(this.isLogin) {
+                let url = isCollect ? 'topic_collect/de_collect' : 'topic_collect/collect ';
+                this.$xhr.post(url,{
+                accesstoken: this.accessToken,
+                topic_id: id
+                }).then(response=>{
+                    let resInfo = isCollect ? '取消收藏成功' :  '收藏成功';
+                    if(response.data['success']) {
+                        this.article.is_collect = !this.article.is_collect; //is_collect动态改变
+                    } else {
+                        resInfo = '操作失败';
+                    }
+                    console.log(resInfo)
+                    this.$store.dispatch('popMsg',{content:resInfo});
+                }).catch(err=>{
+                    console.log(err);
+                    if(err){
+                        this.$store.dispatch('popMsg',{content:'此操作出现了问题'});
+                    }
+                })
+            } else {
+                this.$store.dispatch('popMsg',{content:'请登录后收藏'});
+            }
         }
     },
     beforeRouteEnter:function(to,from,next) {
         next(vm=>{
-            vm.$xhr.get(`topic/${to.params.id}`).then(response=>{
+            vm.$xhr.get(`topic/${to.params.id}`,{params:{
+                accesstoken: vm.isLogin ? vm.accessToken : null //可获取当前用户是否对该主题有收藏等操作
+            }}).then(response=>{
                 console.log(response.data);
                 vm.article = response.data.data;
-                // console.log(response.data.data.author.loginname)
                 vm.author = response.data.data.author;
             }).catch(err=>{
                 console.log(err)
@@ -72,6 +103,19 @@ export default {
             color: #838383;
             font-size: 12px
         }
+        i{
+            color:#838383;
+            cursor: pointer;
+            margin-right: 1em;
+            &:hover{
+                color: #3333;
+            }
+        }
+        .article{
+            padding:10px 0px;
+            min-height: 120px;
+            border-bottom: 3px solid #f0f2f7
+        }
         .collect{
             color: #42b983
         }
@@ -82,10 +126,14 @@ export default {
                 color: black
             }
         }
+        .title{
+            color: #373c38;
+        }
     }
     @media screen and (max-width:700px) {
         article{
-            margin:0
+            margin:0;
+            width: 100%;
         }
     }
 </style>
