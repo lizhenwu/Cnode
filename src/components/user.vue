@@ -11,7 +11,7 @@
         <ul class="tabs">  
           <li v-show="loginname === this.$route.params.user"><a class="tab" @click="toggleTab('msg',$event)">消息</a></li>
           <li><a class="tab" id="init" @click="toggleTab('reply',$event)">最近</a></li>
-          <li><a v-text="isLogin ? '我的收藏':'ta的收藏'" class="tab" @click="toggleTab('collect',$event)"></a></li>
+          <li><a v-text="loginname === this.$route.params.user ? '我的收藏':'ta的收藏'" class="tab" @click="toggleTab('collect',$event)"></a></li>
         </ul>
         <div ref="msg" class="msg" v-show="loginname === this.$route.params.user">
             <ul>
@@ -33,8 +33,13 @@
             </ul>
         </div>
         <div ref="collect" class="msg">
+            <p>收藏</p>
             <ul>
-                <li v-for="item of collects"></li>
+                <li v-for="item of collects">
+                    <label>{{item.tab}}</label><br>
+                    <a @click="getItem(item)">{{item.title}}</a>
+                    <span class="time">{{item.last_reply_at | timeFormat}}</span>
+                </li>
             </ul>
         </div>
       </div>
@@ -75,8 +80,10 @@ export default {
             event.path[0].classList.add('active');
             for(let i in this.$refs) {
                 this.$refs[i].style.opacity = 0;
+                this.$refs[i].style.display = 'none';
             }
             this.$refs[name].style.opacity = 1;
+            this.$refs[name].style.display = 'block';
             switch(name) {
                 case 'msg' : this.getUserMsgs();break;
                 case 'reply': this.getUserActs(this.$route.params.user);break;
@@ -111,6 +118,7 @@ export default {
         },
         getCollects(username) {
             this.$xhr.get(`topic_collect/${username}`).then(response=>{
+                console.log(response.data.data);
                 this.collects = response.data.data;
             })
         }

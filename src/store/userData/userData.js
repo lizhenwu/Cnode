@@ -48,7 +48,8 @@ const getters = {
     hasLogin: state => state.success,
     userMsgsCount: state => state.userMsgsCount,
     loginname: state => state.loginname,
-    avatar: state => state.avatar_url
+    avatar: state => state.avatar_url,
+    id: state => state.id
 }
 
 export default {

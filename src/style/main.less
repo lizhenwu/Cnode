@@ -9,7 +9,8 @@ html,body{
     overflow-x: hidden;
     margin:0;
     padding:0;
-    background: #eeeeee
+    background: #eeeeee;
+    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","\5FAE\8F6F\96C5\9ED1",Arial,sans-serif
 }
 a{
     text-decoration: none;
@@ -42,11 +43,9 @@ a{
     p{
         line-height: 25px;
         margin: 0;
-        text-indent: 2em;
         padding: 0;
         img{
-            margin-left: -2em;
-            width: 90%;
+            max-width: 90%;
         }
     }
     ol,ul{
@@ -61,5 +60,16 @@ a{
         padding: 1em 1em;
         border-left: 10px solid #D6DBDF;
         background: rgba(102,128,153,.05)
+    }
+    pre{
+        font-size: 14px;
+        padding: 0 15px;
+        margin: 20px -10px;
+        background: #f7f7f7
+    }
+    code{
+        color: inherit;
+        white-space: pre-wrap;
+        background: transparent;
     }
 }

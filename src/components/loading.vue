@@ -1,7 +1,7 @@
 <template>
   <div>
   <div class="loading" v-show="isLoading">
-      <p><i><img src="../assets/refresh.svg"></i> 加载中</p>
+      <p><i class="iconfont icon-refresh"></i> 加载中</p>
   </div>
   <transition name="boom-in">
         <div class="backTop" @click="backTop" v-show="scrollY>0"><i class="iconfont icon-jiantoushang"></i></div>
@@ -34,23 +34,25 @@ export default {
         position: fixed;
         z-index: 40;
         width: 5em;
-        height: 1em;
+        height: 1.5em;
+        border-radius: 5px;
+        box-shadow: 0px 0px 1px 0px gray;
         margin: 40vh auto;
         top:0;
         bottom:0;
         left:0;
         right:0;
         text-align: center;
+        background: rgba(55,60,56,.7);
+        color: white;
         p{
             margin: 0;
             font-size: 1em;
+            i{
+                display: inline-block;
+                animation: roll .5s infinite;
+            }
         }
-    }
-    img{
-        vertical-align: middle;
-        width: 1em;
-        height: 80%;
-        animation: roll .5s infinite;
     }
     @keyframes roll {
         0%{

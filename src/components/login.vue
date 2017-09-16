@@ -1,7 +1,7 @@
 <template>
-  <div class="login">
+  <div>
   <tool-bar></tool-bar>
-  <section>
+  <section  class="login">
       <img src="../assets/logo.svg">
       <div class="input">
         <i class="iconfont icon-ziyuan"></i>
@@ -46,26 +46,23 @@ export default {
   }
 }
 </script>
-<style lang="less">
+<style lang="less" scoped>
 @hundred:100%;
-.login{
+section{
+    background: white;
+    padding: 0;
+    padding-top: 3em;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 0;
-    margin: 0;
+    margin:0 15%;
+    // width: 70%;
     height: 100vh;
-    width: 100%;
     overflow: hidden;
-    section{
-        padding-top: 3em;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 40vh;
         img{
             box-sizing: content-box;
-            width: @hundred;
+            width: 30vh;
+            max-width: @hundred*0.9;
             padding: 50px 50px;
             display: block;
             background: black;
@@ -75,6 +72,7 @@ export default {
             margin-top: 20px;
             position: relative;
             i{
+                margin-top: 5px;
                 color: grey;
                 font-size: 1em;
                 position: absolute;
@@ -87,7 +85,12 @@ export default {
                 cursor: pointer;
             }   
         }
-    }
+}
+@media screen and (max-width:700px){
+        section{
+            margin: 0;
+            width: 100%;
+        }
 }
 </style>
 
