@@ -2,7 +2,8 @@ const webpack = require('webpack');
 const path = require('path');
 const htmlWebpackPlugin = require('html-webpack-plugin');
 const cleanWebpackPlugin = require('clean-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin'); //提取css样式到单独的css文件
+const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin'); // 压缩并处理重复的css文件
 
 function resolve (dir) {
     return path.join(__dirname, '..', dir)
@@ -28,14 +29,17 @@ module.exports = {
         contentBase: './build',
         hot: true,
         open:true,
-        host:'192.168.1.115',  /*用于手机端调试*/
-        port:3000
+        // host:'192.168.1.115',  /*用于手机端调试*/
+        // port:3000
     },
     module:{
         rules:[
             {
                 test:/\.vue$/,
-                use:['vue-loader']
+                loader:'vue-loader',
+                // options: {
+                //     extractCSS: true //把vue文件中的css提出出来
+                // }
             },
             {  test: /\.js$/,
                 use:{
@@ -48,15 +52,20 @@ module.exports = {
                 exclude: /node_modules/,
                 use:['style-loader','css-loader','less-loader','postcss-loader']
                 // use: ExtractTextPlugin.extract({
-                // fallback: "style-loader",
-                //     use: [ { loader: 'css-loader', options: { importLoaders: 1 } }, 'postcss-loader',"less-loader"]
+                //     fallback: 'style-loader',
+                //     use: [ 'css-loader', 'postcss-loader','less-loader']
                 // })
+            },
+            {
+                test: /\.css$/,
+                loader: ExtractTextPlugin.extract('style-loader', 'css-loader'),
             },
             {
                 test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
                 loader: 'url-loader',
                 options: {
-                  limit: 10000                }
+                  limit: 10000
+                }
             },
             {
                 test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
@@ -78,8 +87,20 @@ module.exports = {
         new htmlWebpackPlugin({
             template:'./index.html'
         }),
-        // new ExtractTextPlugin({
-        //     filename: "[name].[contenthash].css"}),
-        
+        // new ExtractTextPlugin({                          /* *生产环境下
+        //     filename: '[name].[contenthash].css',           *提取css
+        //     allChunks: true
+        // }),
+        // new OptimizeCSSPlugin({                             *压缩css
+        //     cssProcessorOptions: {
+        //         safe: true
+        //     }
+        // }),
+        // new webpack.optimize.UglifyJsPlugin({               *压缩js     
+        //     compress: {
+        //         warnings: false
+        //     },
+        //     sourceMap: false
+        // })
     ]
 }
