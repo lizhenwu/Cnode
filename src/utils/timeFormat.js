@@ -3,7 +3,7 @@ export default function(value) {
         lastTime = new Date(value);
     let year = nowTime.getFullYear() - lastTime.getFullYear(),
         month = nowTime.getMonth() - lastTime.getMonth(),
-        day = nowTime.getDay() - lastTime.getDay(),
+        day = nowTime.getDate() - lastTime.getDate(),
         hour = nowTime.getHours() - lastTime.getHours(),
         minute = nowTime.getMinutes() - lastTime.getMinutes(),
         second = nowTime.getSeconds() - lastTime.getSeconds();

@@ -3,13 +3,13 @@
     <nav-bar></nav-bar>
     <section>
     <ul class="tabs">
-        <li v-for="(tabCh,tab) in tabs">
-            <!-- (键值，键) -->
+        <li v-for="(tabCh,tab,idx) in tabs" :key="idx">
+            <!-- (键值,键,索引) -->
             <a @click="getTab(tab,1,true);tabActive = tab;">{{tabCh}}</a>
         </li>
     </ul>
     <ul class="items">
-        <li v-for="item in items">
+        <li v-for="(item,idx) in items" :key="idx">
             <div class="leftInfo">
                 <label v-show="all">{{tabs[item.tab]}}</label>
                 <label id="top" v-show="item.top">置顶</label><span v-show="item.top || all">{{item.reply_count}}/{{item.visit_count}} {{item.last_reply_at | timeFormat}}</span>
@@ -110,11 +110,11 @@ export default {
     .home{
         margin:0 15%;
         ul{
-        display: flex;
-        padding-left:0;
-        list-style: none;
-        width:@hundred;
-    }
+            display: flex;
+            padding-left:0;
+            list-style: none;
+            width:@hundred;
+        }
     }
     section{
         box-shadow: 0px 1px 3px 0px #888888;
@@ -122,12 +122,42 @@ export default {
     }
     .tabs{
         // display: block;
-        padding: 0 10px;
+        // padding: 0 10px;
         overflow:hidden;
+        justify-content: space-around;
         li{
-            padding: 0;
+            background: white;
+            appearance: button;
+            padding: 10px;
+            flex: 1;
             white-space: nowrap;
-            margin-right:20px;
+            text-align: center;
+            border: solid 1px transparent;
+            outline: none;
+            position: relative;
+            overflow: hidden;
+            &:after{
+                content: "";
+                display: block;
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                pointer-events: none;
+                background-image: radial-gradient(circle, #666 10%, transparent 10.01%);
+                background-repeat: no-repeat;
+                background-position: 50%;
+                transform: scale(10, 10);
+                opacity: 0;
+                transition: transform .3s, opacity .5s;
+            }
+            &:active::after {
+                transform: scale(0, 0);
+                opacity: .3;
+                transition: 0s;
+            }
+            // margin-right:20px;
             a{
                 color: black;
                 &:hover{
@@ -143,6 +173,8 @@ export default {
                 display: inline-block;
                 width: @hundred*0.8;
                 label{
+                    border-radius: 3px;
+                    padding: 3px;
                     font-size:12px;
                     color:white;
                     background: #42b983;
