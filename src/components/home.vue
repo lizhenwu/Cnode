@@ -3,9 +3,9 @@
     <nav-bar></nav-bar>
     <section>
     <ul class="tabs">
-        <li v-for="(tabCh,tab,idx) in tabs" :key="idx">
+        <li v-for="(tabCh,tab,idx) in tabs" :key="idx" @click="getTab(tab,1,true);" :class="tabActive === tab ? 'activeTab':''">
             <!-- (键值,键,索引) -->
-            <a @click="getTab(tab,1,true);tabActive = tab;">{{tabCh}}</a>
+            <a>{{tabCh}}</a>
         </li>
     </ul>
     <ul class="items">
@@ -55,10 +55,12 @@ export default {
                 page:page         
             }}).then(response=>{
                 let items = response.data.data;
-                let vm = this;
                 toggle ? this.items = items : this.items.push(...items);
-                vm.$store.commit('loading');
+                this.$store.commit('loading');
+                this.tabActive = tab;
             }).catch(err=>{
+                this.$store.commit('loading');
+                this.$store.dispatch('popMsg',{content:'加载失败'});
                 console.log(err);
             })
         },
@@ -72,7 +74,7 @@ export default {
             }
         },
         addEvent:function(){
-            window.addEventListener('scroll',this.loadMoreItems); //这个地方居然不需要对操作一下this？？？
+            window.addEventListener('scroll',this.loadMoreItems);
         },
         itemsInit:function() {
             let vm = this;
@@ -125,14 +127,18 @@ export default {
         // padding: 0 10px;
         overflow:hidden;
         justify-content: space-around;
+        .activeTab{
+            border-bottom: solid 2px #33A6B8;
+        }
         li{
-            background: white;
-            appearance: button;
+            cursor: pointer;
+            background: transparent;
+            border: solid 1px transparent;
+            // appearance: button;
             padding: 10px;
             flex: 1;
             white-space: nowrap;
             text-align: center;
-            border: solid 1px transparent;
             outline: none;
             position: relative;
             overflow: hidden;
@@ -145,7 +151,7 @@ export default {
                 top: 0;
                 left: 0;
                 pointer-events: none;
-                background-image: radial-gradient(circle, #666 10%, transparent 10.01%);
+                background-image: radial-gradient(circle, #33A6B8 10%, transparent 10.01%);
                 background-repeat: no-repeat;
                 background-position: 50%;
                 transform: scale(10, 10);
@@ -217,6 +223,9 @@ export default {
         .home{
             width: @hundred;
             margin: 0;
+        }
+        .tabs li:last-child{
+            flex-grow: 2.5
         }
     }
 </style>

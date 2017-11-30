@@ -70,6 +70,8 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+@color-border: #42b983;
+@color-shadow: lighten(@color-border,0.2);
 section{
     div{
         margin: 2em 0;
@@ -98,8 +100,10 @@ section{
         vertical-align: middle;
         height: 2em;
         padding: 0 10px;
+        transition: box-shadow .2s linear;
         &:focus{
-            box-shadow: 0px 0px 2px 0px #42b983;
+            border-color: @color-border;
+            box-shadow: 0px 0px 3px @color-shadow;
         }
     }
     .newContent{

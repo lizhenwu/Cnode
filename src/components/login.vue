@@ -6,7 +6,7 @@
       <div class="input">
         <i class="iconfont icon-ziyuan"></i>
         <input ref="password" type="text">
-        <span @click="login">登录</span>
+        <button @click="login">登录</button>
       </div>
   </section>
   </div>
@@ -48,6 +48,8 @@ export default {
 </script>
 <style lang="less" scoped>
 @hundred:100%;
+@color-border: #42b983;
+@color-shadow: lighten(@color-border,10%);
 section{
     background: white;
     padding: 0;
@@ -69,20 +71,52 @@ section{
             box-shadow: 1px 1px 20px 5px gray  
         }
         .input{
+            width: 15em;
             margin-top: 20px;
             position: relative;
             i{
                 margin-top: 5px;
+                margin-left: 5px;
+                margin-right: 5px;
                 color: grey;
                 font-size: 1em;
                 position: absolute;
             }
             input{
-                padding-left: 1.5em;
+                outline: none;
+                border: 1px solid #dcdcdc;
+                border-radius: 5px;
+                vertical-align: middle;
+                height: 2em;
+                padding: 0 10px;
+                transition: box-shadow .2s linear;
+                &:focus{
+                    border-color: @color-border;
+                    box-shadow: 0px 0px 3px @color-shadow;
+                }
+                padding-left: 2em;
                 width: 100%;
             }
-            span{
+            button{
+                border-radius: 3px;
+                padding: 5px 0;
+                color: @color-border;
+                border: 1px solid @color-border;
+                outline: none;
+                background: white;
+                display: block;
+                text-align: center;
+                width: 100%;
+                margin: 1em auto;
                 cursor: pointer;
+                transition: all 0.2s linear;
+                &:active{
+                    background-color: @color-shadow;
+                }
+                &:hover{
+                    color: white;
+                    background: @color-border;
+                }
             }   
         }
 }
