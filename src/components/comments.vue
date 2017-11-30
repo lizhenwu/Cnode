@@ -1,7 +1,7 @@
 <template>
     <section>
         <ul>
-            <li v-for="item of replies">
+            <li v-for="(item,idx) of replies" :key="idx">
                 <div class="content" v-html="item.content"></div>
                 <div class="info">
                     <p id="time" class="timeinfo">{{item.create_at | timeFormat}} <i @click="upVote(item)" :style="item.is_uped ? 'color:red':''"  class="iconfont icon-good"></i> {{item.ups.length}}
