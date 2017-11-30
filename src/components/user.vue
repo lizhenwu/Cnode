@@ -15,17 +15,17 @@
         </ul>
         <div ref="msg" class="msg" v-show="loginname === this.$route.params.user">
             <ul>
-                <li v-for="item of not_read"></li>
+                <li v-for="(item,idx) of not_read" :key="idx"></li>
             </ul>
         </div>
         <div ref="reply" class="reply">
             <ul>
-                <li v-for="item of recent_topics">
+                <li v-for="(item,idx) of recent_topics" :key="idx">
                     <label>发布主题</label><br>
                     <a @click="getItem(item)">{{item.title}}</a>
                     <span class="time">{{item.last_reply_at | timeFormat}}</span>
                 </li>
-                <li v-for="item of recent_replies">
+                <li v-for="(item,idx) of recent_replies" :key="idx">
                     <label>发布回复</label><br>
                     <a @click="getItem(item)">{{item.title}}</a>
                     <span class="time">{{item.last_reply_at | timeFormat}}</span>
@@ -35,7 +35,7 @@
         <div ref="collect" class="msg">
             <p>收藏</p>
             <ul>
-                <li v-for="item of collects">
+                <li v-for="(item,idx) of collects" :key="idx">
                     <label>{{item.tab}}</label><br>
                     <a @click="getItem(item)">{{item.title}}</a>
                     <span class="time">{{item.last_reply_at | timeFormat}}</span>
