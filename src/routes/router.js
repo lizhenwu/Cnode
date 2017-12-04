@@ -12,6 +12,17 @@ const routes = [
     {name:'user',path:'/user/:user',component:user},
     {name:'postNew',path:'/postnew',component:postNew}
 ]
-const router = new VueRouter({routes});
+const router = new VueRouter({
+    mode: 'history',
+    base: './', // 用webpack生成dist版本时需要，关于vue-router使用history模式的坑
+    routes,
+    scrollBehavior (to, from, savedPosition) {
+        if(savedPosition) {
+            return savedPosition
+        }else {
+            return { x: 0, y: 0 }
+        }
+    }
+});
 
 export {VueRouter,router};

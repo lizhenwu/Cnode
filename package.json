@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "build": "webpack",
-    "dev": "webpack-dev-server --color"
+    "dev": "webpack-dev-server --color",
+    "dist": "set NODE_ENV=production&&webpack"
   },
   "dependencies": {
     "axios": "^0.16.2",

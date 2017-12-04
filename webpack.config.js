@@ -16,7 +16,8 @@ module.exports = {
     },
     output:{
         filename:'[name].bundle.js',
-        path:path.resolve(__dirname,'build')
+        path:path.resolve(__dirname,'build'),
+        publicPath: './'            // dist的配置，关于vue-router使用history模式的坑
     },
     resolve:{
         extensions:['.js','.vue'],
@@ -24,6 +25,7 @@ module.exports = {
         //     'vue$': 'vue/dist/vue.esm.js'
         // }
     },
+    // 开发环境的配置
     devtool:'inline-source-map',
     devServer: {
         contentBase: './build',
@@ -38,7 +40,7 @@ module.exports = {
                 test:/\.vue$/,
                 loader:'vue-loader',
                 // options: {
-                //     extractCSS: true //把vue文件中的css提出出来
+                //     extractCSS: true // 构建dist版时把vue文件中的css提出出来
                 // }
             },
             {  test: /\.js$/,
@@ -51,7 +53,7 @@ module.exports = {
                 test: /\.(less)$/,
                 exclude: /node_modules/,
                 use:['style-loader','css-loader','less-loader','postcss-loader']
-                // use: ExtractTextPlugin.extract({
+                // use: ExtractTextPlugin.extract({                    // 未使用
                 //     fallback: 'style-loader',
                 //     use: [ 'css-loader', 'postcss-loader','less-loader']
                 // })
@@ -72,7 +74,7 @@ module.exports = {
                 loader: 'url-loader',
                 options: {
                   limit: 10000,
-                //   name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
+                //   name: utils.assetsPath('fonts/[name].[hash:7].[ext]')   // 未使用
                 }
             }
         ]
@@ -87,20 +89,26 @@ module.exports = {
         new htmlWebpackPlugin({
             template:'./index.html'
         }),
-        // new ExtractTextPlugin({                          /* *生产环境下
-        //     filename: '[name].[contenthash].css',           *提取css
-        //     allChunks: true
-        // }),
-        // new OptimizeCSSPlugin({                             *压缩css
-        //     cssProcessorOptions: {
-        //         safe: true
-        //     }
-        // }),
-        // new webpack.optimize.UglifyJsPlugin({               *压缩js     
-        //     compress: {
-        //         warnings: false
-        //     },
-        //     sourceMap: false
-        // })
+        new ExtractTextPlugin({                          // 生产环境下
+            filename: '[name].[contenthash].css',        // 提取css
+            allChunks: true
+        }),
+        new OptimizeCSSPlugin({                             // 压缩css
+            cssProcessorOptions: {
+                safe: true
+            }
+        }),
+        // 使vue构建时采用生产环境版本
+        new webpack.DefinePlugin({
+            'process.env': {
+              NODE_ENV: process.env.NODE_ENV === 'production' ? '"production"' : ''
+            }
+          }),
+        new webpack.optimize.UglifyJsPlugin({               // *压缩js     
+            compress: {
+                warnings: false
+            },
+            sourceMap: false
+        })
     ]
 }
