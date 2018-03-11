@@ -17,11 +17,13 @@ export default {
     ]),
     methods:{
         backTop:function(){
-            let rate = window.scrollY/50;
+            let rate = window.scrollY/10;
             let rocket = window.setInterval(()=>{
                 if(window.scrollY <= 0){
+                    rate = null;
                     window.clearInterval(rocket);
                 }else {
+                    rate = window.scrollY/10;
                     window.scrollTo(0,window.scrollY-rate);
                 }
             },5)

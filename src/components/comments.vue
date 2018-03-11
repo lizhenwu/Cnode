@@ -21,6 +21,7 @@
 import timeFormat from '../utils/timeFormat';
 import { mapGetters } from 'vuex';
 export default {
+    name: 'content',
     data: function() {
         return {
             newReply: '',

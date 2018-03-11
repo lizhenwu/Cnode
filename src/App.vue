@@ -1,10 +1,10 @@
 <template>
     <div>
-    <transition name="slide-fade" appear mode="out-in">
-        <keep-alive>
+    <!-- <transition name="slide-fade" appear mode="out-in"> -->
+      <keep-alive exclude="content">
         <router-view></router-view>
-        </keep-alive>
-    </transition>
+      </keep-alive>
+    <!-- </transition> -->
     <sys-msgs></sys-msgs>
     <loading></loading>
     </div>

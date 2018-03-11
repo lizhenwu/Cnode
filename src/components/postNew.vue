@@ -53,6 +53,8 @@ export default {
                     } else {
                         this.$store.dispatch('popMsg',{content:'发布失败'});
                     }
+                }).catch(err => {
+                    this.$store.dispatch('popMsg',{content: '请检查字数'});
                 })
             } else {
                 this.$store.dispatch('popMsg',{content:'请先登录'});

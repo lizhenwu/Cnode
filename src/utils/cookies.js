@@ -1,5 +1,5 @@
 const MAX_AGE = 7*24*3600;
-
+const DOMAIN = window.location.hostname; 
 export const getCookies = function() {
     let cookies = window.document.cookie;
     if(cookies) {
@@ -16,8 +16,7 @@ export const getCookies = function() {
 }
 
 export const setCookie = function(name,value) {
-    let domain = window.location.hostname; 
-    window.document.cookie = `${name}=${value};max-age=${MAX_AGE};domain=${domain}`;
+    window.document.cookie = `${name}=${value};max-age=${MAX_AGE};domain=${DOMAIN}`;
 }
 export const deleteCookies = function() {
     let cookies = getCookies();

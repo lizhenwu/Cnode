@@ -26,22 +26,22 @@ module.exports = {
         // }
     },
     // 开发环境的配置
-    devtool:'inline-source-map',
-    devServer: {
-        contentBase: './build',
-        hot: true,
-        open:true,
-        // host:'192.168.1.115',  /*用于手机端调试*/
-        // port:3000
-    },
+    // devtool:'inline-source-map',
+    // devServer: {
+    //     contentBase: './build',
+    //     hot: true,
+    //     open:true,
+    //     // host:'192.168.1.115',  /*用于手机端调试*/
+    //     port:3000
+    // },
     module:{
         rules:[
             {
                 test:/\.vue$/,
                 loader:'vue-loader',
-                // options: {
-                //     extractCSS: true // 构建dist版时把vue文件中的css提出出来
-                // }
+                options: {
+                    extractCSS: true // 构建dist版时把vue文件中的css提出出来
+                }
             },
             {  test: /\.js$/,
                 use:{
@@ -52,11 +52,11 @@ module.exports = {
             {
                 test: /\.(less)$/,
                 exclude: /node_modules/,
-                use:['style-loader','css-loader','less-loader','postcss-loader']
-                // use: ExtractTextPlugin.extract({                    // 未使用
-                //     fallback: 'style-loader',
-                //     use: [ 'css-loader', 'postcss-loader','less-loader']
-                // })
+                // use:['style-loader','css-loader','less-loader','postcss-loader']
+                use: ExtractTextPlugin.extract({                    // 未使用
+                    fallback: 'style-loader',
+                    use: [ 'css-loader', 'postcss-loader','less-loader']
+                })
             },
             {
                 test: /\.css$/,
@@ -85,7 +85,7 @@ module.exports = {
             name: 'vendor',
             filename: 'vendor-[hash].min.js',
         }),
-        new cleanWebpackPlugin(['build']),
+        new cleanWebpackPlugin(['build']), // 失效？ 
         new htmlWebpackPlugin({
             template:'./index.html'
         }),
@@ -103,10 +103,21 @@ module.exports = {
             'process.env': {
               NODE_ENV: process.env.NODE_ENV === 'production' ? '"production"' : ''
             }
-          }),
+        }),
         new webpack.optimize.UglifyJsPlugin({               // *压缩js     
+            beautify: false,
+            // 删除所有的注释
+            comments: false,
             compress: {
-                warnings: false
+                // 在UglifyJs删除没有用到的代码时不输出警告
+                warnings: false,
+                // 删除所有的 `console` 语句
+                // 还可以兼容ie浏览器
+                drop_console: true,
+                // 内嵌定义了但是只用到一次的变量
+                collapse_vars: true,
+                // 提取出出现多次但是没有定义成变量去引用的静态值
+                reduce_vars: true
             },
             sourceMap: false
         })

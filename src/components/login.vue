@@ -49,7 +49,7 @@ export default {
 <style lang="less" scoped>
 @hundred:100%;
 @color-border: #42b983;
-@color-shadow: lighten(@color-border,10%);
+@color-shadow: lighten(@color-border,20%);
 section{
     background: white;
     padding: 0;
@@ -110,12 +110,12 @@ section{
                 margin: 1em auto;
                 cursor: pointer;
                 transition: all 0.2s linear;
-                &:active{
-                    background-color: @color-shadow;
-                }
                 &:hover{
                     color: white;
                     background: @color-border;
+                }
+                &:active{
+                    background-color: @color-shadow;
                 }
             }   
         }

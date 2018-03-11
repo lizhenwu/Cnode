@@ -2,7 +2,7 @@
   <header>
       <a><img src="../assets/cnodejs_light.svg"></a>
       <nav>
-            <i class="iconfont icon-information"></i>
+            <i class="iconfont icon-information" @click="getAboutInfo"></i>
             <i class="iconfont icon-edit" @click="postTopic"></i>
             <i v-show="!isLogin" @click="login" class="iconfont icon-account"></i>
             <img class="new" v-show="isLogin" @click="getUserInfo" :src="avatar">
@@ -29,6 +29,9 @@ export default {
             this.$router.push({name:'user',params:{user:this.loginname}});
             this.$store.state.currentPage = "我的主页"
         },
+        getAboutInfo() {
+            this.$store.dispatch('popMsg',{content:'暂时不装这个b了'});
+        },
         postTopic() {
             if(this.isLogin) {
                 this.$router.push({name:'postNew'})
@@ -50,7 +53,7 @@ export default {
         height: 80px;
         width: 100%;
         padding: 10px 10px;
-        box-shadow: 1px 1px 5px 1px #888888;
+        box-shadow: 0px 0px 10px 0px #888888;
         img{
             width: 8em;
         }

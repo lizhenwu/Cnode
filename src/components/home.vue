@@ -58,6 +58,7 @@ export default {
                 toggle ? this.items = items : this.items.push(...items);
                 this.$store.commit('loading');
                 this.tabActive = tab;
+                this.page = 1;
             }).catch(err=>{
                 this.$store.commit('loading');
                 this.$store.dispatch('popMsg',{content:'加载失败'});
@@ -70,7 +71,7 @@ export default {
         loadMoreItems:function(e) {
             // this.$store.state.scrollY = window.scrollY;
             if(!this.$store.state.isLoading && window.document.documentElement.offsetHeight <= window.screen.height + window.scrollY) {
-                this.getTab(this.tabActive,this.page++,false)
+                this.getTab(this.tabActive,++this.page,false)
             }
         },
         addEvent:function(){
@@ -94,6 +95,7 @@ export default {
     },
     created() {
         this.itemsInit();
+        console.log('home');
     },
     beforeRouteEnter(to,from,next) {
         next(vm=>{
@@ -119,7 +121,7 @@ export default {
         }
     }
     section{
-        box-shadow: 0px 1px 3px 0px #888888;
+        box-shadow: 0px 0px 12px -5px #888888;
         background: white
     }
     .tabs{

@@ -14,7 +14,7 @@ const routes = [
 ]
 const router = new VueRouter({
     mode: 'history',
-    base: './', // 用webpack生成dist版本时需要，关于vue-router使用history模式的坑
+    // base: './', // 用webpack生成dist版本时需要，关于vue-router使用history模式的坑
     routes,
     scrollBehavior (to, from, savedPosition) {
         if(savedPosition) {

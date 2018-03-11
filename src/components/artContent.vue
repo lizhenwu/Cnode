@@ -22,6 +22,7 @@ import comments from './comments';
 import { mapGetters } from 'vuex';
 import timeFormat from '../utils/timeFormat';
 export default {
+    name: 'content',
     data:function() {
         return {
             article:{},
@@ -71,19 +72,31 @@ export default {
             }
         }
     },
+    created() {
+        console.log('content');
+    },
     beforeRouteEnter:function(to,from,next) {
         next(vm=>{
+            vm.$store.commit('loading');
             vm.$xhr.get(`topic/${to.params.id}`,{params:{
                 accesstoken: vm.isLogin ? vm.accessToken : null //可获取当前用户是否对该主题有收藏等操作
             }}).then(response=>{
+                vm.$store.commit('loading');
                 console.log(response.data);
                 vm.article = response.data.data;
                 vm.author = response.data.data.author;
             }).catch(err=>{
+                vm.$store.commit('loading');
+                vm.$store.dispatch('popMsg',{content:'加载失败'});
                 console.log(err)
             })
             vm.$store.state.currentPage = '文章详情';
         })
+  },
+  beforeRouteLeave(to, from, next) {
+      this.article = null;
+      this.author = null;
+      next();
   }
 }
 </script>
