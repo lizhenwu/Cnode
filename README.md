@@ -1,2 +1,2 @@
 # Cnode
-a simple Cnode community website developed by vue
+a simple Cnode community SPA developed with vue
