@@ -1,11 +1,11 @@
 <template>
   <header>
       <a><img src="../assets/cnodejs_light.svg"></a>
-      <nav>
-            <i class="iconfont icon-information" @click="getAboutInfo"></i>
-            <i class="iconfont icon-edit" @click="postTopic"></i>
-            <i v-show="!isLogin" @click="login" class="iconfont icon-account"></i>
-            <img class="new" v-show="isLogin" @click="getUserInfo" :src="avatar">
+      <nav ref="nav">
+            <a><i class="iconfont icon-information" @click="getAboutInfo"></i></a>
+            <a><i class="iconfont icon-edit" @click="postTopic"></i></a>
+            <a><i v-show="!isLogin" @click="login" class="iconfont icon-account"></i></a>
+            <a><img class="new" v-show="isLogin" @click="getUserInfo" :src="avatar"></a>
       </nav>
   </header>
 </template>
@@ -39,6 +39,14 @@ export default {
                 this.$store.dispatch('popMsg',{content:'请登录后使用'})
             }
         }
+    },
+    mounted() {
+        this.$refs.nav.addEventListener('touchstart', function(e){
+            e.target.style.color = '#42b983'
+        });
+        this.$refs.nav.addEventListener('touchend', function(e) {
+            e.target.style.color = '#fff';
+        })
     }
 }
 </script>
@@ -61,6 +69,9 @@ export default {
             display: flex;
             align-items: center;
             justify-content: center;
+            a{
+                text-decoration: none
+            }
             i{
                 font-size:1em;
                 cursor: pointer;
@@ -83,6 +94,11 @@ export default {
                 width: 2em;
                 border-radius: 50%;
             }
+        }
+    }
+    @media screen and (max-width:700px) {
+        nav i:hover{
+
         }
     }
 </style>
