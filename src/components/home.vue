@@ -8,7 +8,7 @@
             <a>{{tabCh}}</a>
         </li>
     </ul>
-    <ul class="items">
+    <ul ref="items" class="items">
         <li v-for="(item,idx) in items" :key="idx">
             <div class="leftInfo">
                 <label v-show="all">{{tabs[item.tab]}}</label>
@@ -96,6 +96,24 @@ export default {
     created() {
         this.itemsInit();
         console.log('home');
+    },
+    mounted() {
+        this.$refs.items.addEventListener('touchstart', function(e) {
+            if(e.target.tagName === 'UL') return;
+            let target = e.target;
+            while(target.tagName !== 'LI') {
+                target = target.parentNode;
+            }
+            target.style.background = 'rgba(189,192,186,.1)';
+        });
+        this.$refs.items.addEventListener('touchend', function(e) {
+            if(e.target.tagName === 'UL') return;
+            let target = e.target;
+            while(target.tagName !== 'LI') {
+                target = target.parentNode;
+            }
+            target.style.background = 'transparent';
+        })
     },
     beforeRouteEnter(to,from,next) {
         next(vm=>{
@@ -228,6 +246,13 @@ export default {
         }
         .tabs li:last-child{
             flex-grow: 2.5
+        }
+        .items{
+            li{
+                &:hover{
+                    background: transparent
+                }
+            }
         }
     }
 </style>
