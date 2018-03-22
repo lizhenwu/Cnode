@@ -88,6 +88,14 @@ export default {
             }).catch(err=>{
                 console.log(err);
             })
+        },
+        touchHandler(e, val) {
+            if(e.target.tagName === 'UL') return;
+            let target = e.target;
+            while(target.tagName !== 'LI') {
+                target = target.parentNode;
+            }
+            target.style.background = val;
         }
     },
     filters:{
@@ -98,21 +106,12 @@ export default {
         console.log('home');
     },
     mounted() {
-        this.$refs.items.addEventListener('touchstart', function(e) {
-            if(e.target.tagName === 'UL') return;
-            let target = e.target;
-            while(target.tagName !== 'LI') {
-                target = target.parentNode;
-            }
-            target.style.background = 'rgba(189,192,186,.1)';
+        // 箭头函数绑定当前实例this
+        this.$refs.items.addEventListener('touchstart', e => {
+            this.touchHandler(e, 'rgba(189,192,186,.1)');
         });
-        this.$refs.items.addEventListener('touchend', function(e) {
-            if(e.target.tagName === 'UL') return;
-            let target = e.target;
-            while(target.tagName !== 'LI') {
-                target = target.parentNode;
-            }
-            target.style.background = 'transparent';
+        this.$refs.items.addEventListener('touchend', e => {
+            this.touchHandler(e, 'transparent');
         })
     },
     beforeRouteEnter(to,from,next) {
